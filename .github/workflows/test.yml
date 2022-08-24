@@ -16,6 +16,7 @@ jobs:
         os: [ubuntu-latest, macOS-latest]
         plan:
         - { build: stack, stackyml: "--stack-yaml stack.yaml" }
+        - { build: stack, stackyml: "--stack-yaml stack-19.yaml" }
         include:
           - os: macOS-latest
             brew: z3 md5sha1sum

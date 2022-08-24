@@ -17,7 +17,6 @@ library
       src
   build-depends:
       base >4.14 && <5
-    , sbv
   default-language: Haskell2010
 
 test-suite spec
@@ -35,6 +34,5 @@ test-suite spec
     , gh-action-test
     , hspec ==2.*
     , hspec-junit-formatter >=1.0.0.0
-    , sbv
   default-language: Haskell2010
   build-tool-depends: hspec-discover:hspec-discover == 2.*
