@@ -49,14 +49,17 @@ jobs:
 
     - name: Cache Key
       id: cache_key
-      run: echo ::set-output name=key::$(md5sum stack.yaml | awk '{print $1}')
+      run: |
+        echo ::set-output name=key_stack::$(md5sum stack.yaml | awk '{print $1}')
+        echo ::set-output name=key_pkg1::$(md5sum pkg1/package.yaml | awk '{print $1}')
+        echo ::set-output name=key_pkg2::$(md5sum pkg2/package.yaml | awk '{print $1}')
 
     - name: Cache Dependencies
       id: cache
       uses: actions/cache@v1
       with:
         path: ~/.stack
-        key: ${{ matrix.os }}-${{ steps.cache_key.outputs.key }}-${{ matrix.plan.build }}-${{ matrix.plan.arg }}
+        key: ${{ matrix.os }}-${{ steps.cache_key.outputs.key_stack }}-${{ steps.cache_key.outputs.key_pkg1 }}-${{ steps.cache_key.outputs.key_pkg2 }}-${{ matrix.plan.build }}-${{ matrix.plan.arg }}
 
     - name: Install dependencies
       run: |
