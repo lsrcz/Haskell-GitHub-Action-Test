@@ -86,7 +86,7 @@ jobs:
     - name: Upload Coveralls
       run: |
         set -ex
-        echo "SUBMIT_COVERALLS"
+        echo "$SUBMIT_COVERALLS"
         if [ "$BUILD" == "stack" ] && [ "$SUBMIT_COVERALLS" == "1" ]; then
           wget https://github.com/rubik/stack-hpc-coveralls/releases/download/v0.0.6.1/shc-linux-x64-8.10.4.tar.bz2 && tar -xjf shc-linux-x64-8.10.4.tar.bz2 && ./shc --repo-token=$COVERALLS_REPO_TOKEN combined all
         fi
