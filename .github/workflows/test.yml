@@ -15,8 +15,8 @@ jobs:
       matrix:
         os: [ubuntu-latest, macOS-latest]
         plan:
-        - { build: stack, stackyml: "--stack-yaml stack.yaml" }
-        - { build: stack, stackyml: "--stack-yaml stack-19.yaml" }
+        - { build: stack, arg: "stack.yaml" }
+        - { build: stack, arg: "stack-19.yaml" }
         include:
           - os: macOS-latest
             brew: z3 md5sha1sum
@@ -56,19 +56,19 @@ jobs:
       uses: actions/cache@v1
       with:
         path: ~/.stack
-        key: ${{ matrix.os }}-${{steps.cache_key.outputs.key }}
+        key: ${{ matrix.os }}-${{ steps.cache_key.outputs.key }}-${{ matrix.plan.build }}-${{ matrix.plan.arg }}
 
     - name: Install dependencies
       run: |
         set -ex
         case "$BUILD" in
           stack)
-            stack --no-terminal --install-ghc $ARGS test --bench --only-dependencies
+            stack --no-terminal --install-ghc --stack-yaml $ARGS test --bench --only-dependencies
             ;;
         esac
         set +ex
       env:
-        ARGS: ${{ matrix.plan.stackyml }}
+        ARGS: ${{ matrix.plan.arg }}
         BUILD: ${{ matrix.plan.build }}
     
     - name: Build
@@ -76,12 +76,12 @@ jobs:
         set -ex
         case "$BUILD" in
           stack)
-            stack --no-terminal $ARGS test --bench --no-run-benchmarks --coverage
+            stack --no-terminal --stack-yaml $ARGS test --bench --no-run-benchmarks --coverage
             ;;
         esac
         set +ex
       env:
-        ARGS: ${{ matrix.plan.stackyml }}
+        ARGS: ${{ matrix.plan.arg }}
         BUILD: ${{ matrix.plan.build }}
 
     - name: Upload Coveralls
@@ -89,8 +89,8 @@ jobs:
         set -ex
         wget https://github.com/rubik/stack-hpc-coveralls/releases/download/v0.0.6.1/shc-linux-x64-8.10.4.tar.bz2 && tar -xjf shc-linux-x64-8.10.4.tar.bz2 && ./shc --repo-token=${{ secrets.COVERALLS_REPO_TOKEN }} combined all || true
         set +ex
-      if: matrix.os == 'ubuntu-latest' && matrix.plan.build == 'stack' && matrix.plan.stackyml == '--stack-yaml stack.yaml'
+      if: matrix.os == 'ubuntu-latest' && matrix.plan.build == 'stack' && matrix.plan.arg == 'stack.yaml'
       env:
-        ARGS: ${{ matrix.plan.stackyml }}
+        ARGS: ${{ matrix.plan.arg }}
         BUILD: ${{ matrix.plan.build }}
         
