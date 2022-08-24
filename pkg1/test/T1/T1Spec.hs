@@ -1,7 +1,7 @@
 module T1.T1Spec where
 
-import Test.Hspec
 import T1.T1
+import Test.Hspec
 
 spec :: Spec
 spec = do
