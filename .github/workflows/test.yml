@@ -1,0 +1,59 @@
+# Based on https://gist.github.com/mstksg/11f753d891cee5980326a8ea8c865233
+
+name: Haskell Tests
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - 'releases/*'
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macOS-latest]
+        plan:
+        - { build: stack, stackyml: "stack.yaml" }
+        include:
+          - os: macOS-latest
+            brew: [z3]
+          - os: ubuntu-latest
+            apt-get: [z3]
+  
+    runs-on: ${{ matrix.os }}
+    steps:
+    - name: Install OS Packages
+      uses: mstksg/get-package@v1
+      with:
+        apt-get: ${{ matrix.apt-get }}
+        brew: ${{ matrix.brew }}
+    
+    - uses: actions/checkout@v3
+
+    - name: Setup stack
+      uses: mstksg/setup-stack@v2
+
+    - name: Install dependencies
+      run: |
+        set -ex
+        case "$BUILD" in
+          stack)
+            stack --no-terminal --install-ghc $ARGS test --bench --only-dependencies
+            ;;
+        esac
+        set +ex
+    
+    - name: Build
+      run: |
+        set -ex
+        case "$BUILD" in
+          stack)
+            stack --no-terminal $ARGS test --bench --no-run-benchmarks --haddock --no-haddock-deps
+            ;;
+        esac
+        set +ex
+      env:
+        ARGS: ${{ matrix.plan.stackyml }}
+        BUILD: ${{ matrix.plan.build }}
