@@ -75,10 +75,21 @@ jobs:
         set -ex
         case "$BUILD" in
           stack)
-            stack --no-terminal $ARGS test --bench --no-run-benchmarks --haddock --no-haddock-deps
+            stack --no-terminal $ARGS test --bench --no-run-benchmarks --haddock --no-haddock-deps --coverage
             ;;
         esac
         set +ex
       env:
         ARGS: ${{ matrix.plan.stackyml }}
         BUILD: ${{ matrix.plan.build }}
+
+    - name: Upload Coveralls
+      run: |
+        if [ "$BUILD" == "stack" ] && [ "$SUBMIT_COVERALLS" == "1" ]; then
+          wget https://github.com/rubik/stack-hpc-coveralls/releases/download/v0.0.6.1/shc-linux-x64-8.10.4.tar.bz2 && tar -xjf shc-linux-x64-8.10.4.tar.bz2 && ./shc --repo-token=$COVERALLS_REPO_TOKEN combined all
+        fi
+      if: matrix.os == 'ubuntu-latest'
+      env:
+        ARGS: ${{ matrix.plan.stackyml }}
+        BUILD: ${{ matrix.plan.build }}
+        
