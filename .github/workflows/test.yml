@@ -33,7 +33,18 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Setup stack
-      uses: mstksg/setup-stack@v2
+      run: |
+        set -ex
+        mkdir -p ~/.local/bin
+        case ${{ matrix.os }} in
+          macOS-latest)
+            curl --insecure -L https://get.haskellstack.org/stable/linux-x86_64.tar.gz | tar xz --wildcards --strip-components=1 --include '*/stack' -C ~/.local/bin
+            ;;
+          ubuntu-latest)
+            curl -L https://get.haskellstack.org/stable/linux-x86_64.tar.gz | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack' 
+            ;;
+        esac
+        echo "${HOME}/.local/bin" >> $GITHUB_PATH
 
     - name: Install dependencies
       run: |
