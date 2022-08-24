@@ -35,7 +35,7 @@ jobs:
     - name: Setup stack
       run: |
         set -ex
-        mkdir -p ~/.local/bin
+        mkdir -p "${HOME}/.local/bin"
         case ${{ matrix.os }} in
           macOS-latest)
             curl --insecure -L https://get.haskellstack.org/stable/linux-x86_64.tar.gz | tar xz --strip-components=1 --include '*/stack' -C ~/.local/bin
@@ -44,6 +44,7 @@ jobs:
             curl -L https://get.haskellstack.org/stable/linux-x86_64.tar.gz | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack' 
             ;;
         esac
+        chmod +x "${HOME}/.local/bin/stack"
         echo "${HOME}/.local/bin" >> $GITHUB_PATH
 
     - name: Install dependencies
@@ -55,6 +56,9 @@ jobs:
             ;;
         esac
         set +ex
+      env:
+        ARGS: ${{ matrix.plan.stackyml }}
+        BUILD: ${{ matrix.plan.build }}
     
     - name: Build
       run: |
