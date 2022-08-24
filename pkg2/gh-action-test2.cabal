@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 
-name:           gh-action-test
+name:           gh-action-test2
 version:        0.0.0
 build-type:     Simple
 
@@ -12,7 +12,7 @@ library
   exposed-modules:
       T1.T1
   other-modules:
-      Paths_gh_action_test
+      Paths_gh_action_test2
   hs-source-dirs:
       src
   build-depends:
@@ -27,12 +27,12 @@ test-suite spec
       Runner
       Spec
       T1.T1Spec
-      Paths_gh_action_test
+      Paths_gh_action_test2
   hs-source-dirs:
       test
   build-depends:
       base >4.14 && <5
-    , gh-action-test
+    , gh-action-test2
     , hspec ==2.*
     , hspec-junit-formatter >=1.0.0.0
     , sbv
