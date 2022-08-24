@@ -20,6 +20,7 @@ runTests name spec = do
   junitOutputDirectory <- lookupEnv "JUNIT_OUTPUT_DIRECTORY"
   case (junitEnabled, junitOutputDirectory) of
     (Just "1", Just path) -> do
+
 #if MIN_VERSION_hspec_junit_formatter(1,0,2)
       let
         junitConfig = setJUnitConfigOutputName "test_results.xml" $
@@ -29,9 +30,10 @@ runTests name spec = do
       summary@(Summary e f) <- hspecWithResult hspecConfig spec
       _ <- putStrLn $ "Total " ++ show e ++ " examples, failed " ++ show f ++ " examples."
       evaluateSummary summary
+    _ -> hspec spec
 #else
       summary@(Summary e f) <- runJUnitSpec spec (path, name) defaultConfig
       _ <- putStrLn $ "Total " ++ show e ++ " examples, failed " ++ show f ++ " examples."
       evaluateSummary summary
-#endif
     _ -> hspec spec
+#endif
