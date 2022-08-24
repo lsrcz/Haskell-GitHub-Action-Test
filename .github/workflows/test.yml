@@ -38,10 +38,10 @@ jobs:
         mkdir -p "${HOME}/.local/bin"
         case ${{ matrix.os }} in
           macOS-latest)
-            curl --insecure -L https://get.haskellstack.org/stable/linux-x86_64.tar.gz | tar xz --strip-components=1 --include '*/stack' -C ~/.local/bin
+            curl --insecure -L https://get.haskellstack.org/stable/osx-x86_64.tar.gz | tar xz --strip-components=1 --include '*/stack' -C ~/.local/bin
             ;;
           ubuntu-latest)
-            curl -L https://get.haskellstack.org/stable/osx-x86_64.tar.gz | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack' 
+            curl -L https://get.haskellstack.org/stable/linux-x86_64.tar.gz | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack' 
             ;;
         esac
         echo "${HOME}/.local/bin" >> $GITHUB_PATH
