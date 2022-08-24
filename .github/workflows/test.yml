@@ -96,4 +96,14 @@ jobs:
       env:
         ARGS: ${{ matrix.plan.arg }}
         BUILD: ${{ matrix.plan.build }}
+    
+    - name: Haddock path
+      id: haddock_path
+      run: echo ::set-output name=haddock_path::$(stack path --stack-yaml stack.yaml --local-doc-root)
         
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v3
+      if: matrix.os == 'ubuntu-latest' && matrix.plan.build == 'stack' && matrix.plan.arg == 'stack.yaml'
+      with:
+        name: haddock
+        path: ${{ steps.haddock_path.outputs.haddock_path }}
