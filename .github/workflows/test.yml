@@ -18,7 +18,7 @@ jobs:
         - { build: stack, stackyml: "--stack-yaml stack.yaml" }
         include:
           - os: macOS-latest
-            brew: z3
+            brew: z3 md5sha1sum
           - os: ubuntu-latest
             apt-get: z3
   
