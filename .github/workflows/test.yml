@@ -76,7 +76,7 @@ jobs:
         set -ex
         case "$BUILD" in
           stack)
-            stack --no-terminal --stack-yaml $ARGS test --bench --no-run-benchmarks --coverage
+            stack --no-terminal --stack-yaml $ARGS test --bench --no-run-benchmarks --haddock --no-haddock-deps --coverage
             ;;
         esac
         set +ex
