@@ -1,0 +1,20 @@
+name: lint
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - 'releases/*'
+
+jobs:
+  hlint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: 'Set up HLint'
+      uses: rwe/actions-hlint-setup@v1
+
+    - name: 'Run HLint'
+      uses: rwe/actions-hlint-run@v2
