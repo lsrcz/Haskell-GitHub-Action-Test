@@ -27,9 +27,11 @@ runTests name spec = do
         hspecConfig = configWithJUnit junitConfig defaultConfig
 
       summary@(Summary e f) <- hspecWithResult hspecConfig spec
-#else
-      summary@(Summary e f) <- runJUnitSpec spec (path, name) defaultConfig
-#endif
       _ <- putStrLn $ "Total " ++ show e ++ " examples, failed " ++ show f ++ " examples."
       evaluateSummary summary
+#else
+      summary@(Summary e f) <- runJUnitSpec spec (path, name) defaultConfig
+      _ <- putStrLn $ "Total " ++ show e ++ " examples, failed " ++ show f ++ " examples."
+      evaluateSummary summary
+#endif
     _ -> hspec spec
