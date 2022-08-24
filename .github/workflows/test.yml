@@ -106,6 +106,7 @@ jobs:
             ;;
         esac
         set +ex
+      if: matrix.os == 'ubuntu-latest' && matrix.plan.build == 'stack' && matrix.plan.arg == 'stack.yaml'
       env:
         ARGS: ${{ matrix.plan.arg }}
         BUILD: ${{ matrix.plan.build }}
@@ -113,6 +114,7 @@ jobs:
     - name: Haddock path
       id: haddock_path
       run: echo ::set-output name=haddock_path::$(stack path --stack-yaml stack.yaml --local-doc-root)
+      if: matrix.os == 'ubuntu-latest' && matrix.plan.build == 'stack' && matrix.plan.arg == 'stack.yaml'
         
     - name: Upload Artifact
       uses: actions/upload-artifact@v3
