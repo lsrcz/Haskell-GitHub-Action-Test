@@ -46,6 +46,17 @@ jobs:
         esac
         echo "${HOME}/.local/bin" >> $GITHUB_PATH
 
+    - name: Cache Key
+      id: cache_key
+      run: echo ::set-output name=key::$(md5sum stack.yaml | awk '{print $1}')
+
+    - name: Cache Dependencies
+      id: cache
+      uses: actions/cache@v1
+      with:
+        path: ~/.stack
+        key: ${{ matrix.os }}-${{steps.cache_key.outputs.key }}
+
     - name: Install dependencies
       run: |
         set -ex
