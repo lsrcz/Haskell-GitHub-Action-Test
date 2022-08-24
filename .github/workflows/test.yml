@@ -41,10 +41,9 @@ jobs:
             curl --insecure -L https://get.haskellstack.org/stable/linux-x86_64.tar.gz | tar xz --strip-components=1 --include '*/stack' -C ~/.local/bin
             ;;
           ubuntu-latest)
-            curl -L https://get.haskellstack.org/stable/linux-x86_64.tar.gz | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack' 
+            curl -L https://get.haskellstack.org/stable/osx-x86_64.tar.gz | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack' 
             ;;
         esac
-        chmod +x "${HOME}/.local/bin/stack"
         echo "${HOME}/.local/bin" >> $GITHUB_PATH
 
     - name: Install dependencies
