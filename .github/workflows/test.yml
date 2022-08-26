@@ -79,13 +79,18 @@ jobs:
         set -ex
         case "$BUILD" in
           stack)
-            stack --no-terminal --stack-yaml $ARGS test --bench --no-run-benchmarks --coverage
+            stack --no-terminal --stack-yaml $ARGS test --bench --no-run-benchmarks --coverage --test-arguments "--xml=reports.xml"
             ;;
         esac
         set +ex
       env:
         ARGS: ${{ matrix.plan.arg }}
         BUILD: ${{ matrix.plan.build }}
+      continue-on-error: true
+    
+    - uses: test-summary/action@v1
+      with:
+        paths: '**/haskell-test-report.xml'
 
     - name: Upload Coveralls
       run: |

@@ -12,8 +12,6 @@ tests:
     source-dirs: test
     dependencies:
       - gh-action-test 
-      - hspec == 2.*
-      - hspec-junit-formatter >= 1.0.0.0
-    verbatim:
-      build-tool-depends:
-        hspec-discover:hspec-discover == 2.*
+      - tasty
+      - tasty-hunit
+      - tasty-test-reporter

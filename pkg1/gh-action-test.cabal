@@ -23,16 +23,13 @@ test-suite spec
   type: exitcode-stdio-1.0
   main-is: Main.hs
   other-modules:
-      Runner
-      Spec
-      T1.T1Spec
       Paths_gh_action_test
   hs-source-dirs:
       test
   build-depends:
       base >4.14 && <5
     , gh-action-test
-    , hspec ==2.*
-    , hspec-junit-formatter >=1.0.0.0
+    , tasty
+    , tasty-hunit
+    , tasty-test-reporter
   default-language: Haskell2010
-  build-tool-depends: hspec-discover:hspec-discover == 2.*
