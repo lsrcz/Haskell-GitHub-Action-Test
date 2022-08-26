@@ -59,7 +59,10 @@ jobs:
       uses: actions/cache@v1
       with:
         path: ~/.stack
-        key: ${{ matrix.os }}-${{ steps.cache_key.outputs.key_stack }}-${{ steps.cache_key.outputs.key_pkg1 }}-${{ steps.cache_key.outputs.key_pkg2 }}-${{ matrix.plan.build }}-${{ matrix.plan.arg }}
+        key: ${{ matrix.os }}-${{ matrix.plan.build }}-${{ matrix.plan.arg }}-${{ steps.cache_key.outputs.key_stack }}-${{ steps.cache_key.outputs.key_pkg1 }}-${{ steps.cache_key.outputs.key_pkg2 }}
+        restore-keys: |
+          ${{ matrix.os }}-${{ matrix.plan.build }}-${{ matrix.plan.arg }}
+          ${{ matrix.os }}
 
     - name: Install dependencies
       run: |
