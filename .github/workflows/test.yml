@@ -78,11 +78,12 @@ jobs:
         BUILD: ${{ matrix.plan.build }}
     
     - name: Build & Test
+      id: test
       run: |
         set -ex
         case "$BUILD" in
           stack)
-            stack --no-terminal --stack-yaml $ARGS test --bench --no-run-benchmarks --coverage --test-arguments "--xml=reports.xml"
+            stack --no-terminal --stack-yaml $ARGS test --bench --no-run-benchmarks --coverage --test-arguments "--xml=haskell-test-report.xml"
             ;;
         esac
         set +ex
@@ -94,6 +95,11 @@ jobs:
     - uses: test-summary/action@v1
       with:
         paths: '**/haskell-test-report.xml'
+
+    - name: Fail late
+      run: |
+        false
+      if: steps.test.outcome != 'success'
 
     - name: Upload Coveralls
       run: |
