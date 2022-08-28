@@ -100,7 +100,7 @@ jobs:
       if: success() || failure ()
       with:
         name: Tests
-        paths: '**/haskell-test-reporting.xml'
+        path: '**/haskell-test-reporting.xml'
         reporter: java-junit
 
     - name: Upload Coveralls
